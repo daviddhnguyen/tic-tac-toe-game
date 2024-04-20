@@ -154,7 +154,6 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
   
   const printNewRound = () => {
     dom.renderBoard(board)
-    board.printBoard();
     console.log(`It's now ${getActivePlayer().name}'s turn.'`);
   };
   
@@ -163,20 +162,17 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
     
     if (board.setToken(row, column, getActivePlayer().token) == false) {
       console.log(`Try again ${getActivePlayer().name}`)
-      dom.renderBoard(board)
-      board.printBoard();      
+      dom.renderBoard(board)    
       return
     } else if (board.checkWin() == true) {
       console.log(`${getActivePlayer().name} is the winner!`)
       dom.renderBoard(board)
-      board.printBoard();
       return
     } else {
       round = round + 1;
       if (board.checkDraw(round) == true) {
         console.log(`Game is a draw!`)
         dom.renderBoard(board)
-        board.printBoard();
         return
       }
       switchPlayerTurn();
@@ -229,78 +225,75 @@ function domActions() {
   };
 }
 
-const game = GameController('David','Sally');
-
-// const dom = createDom();
-// dom.renderBoard()
+// const game = GameController('David','Sally');
 
 // UNIT TEST
-
-function simDiag() {
-  const game = GameController();
-  game.playRound(0,0);
-  game.playRound(1,0);
-  game.playRound(0,0);
-  game.playRound(1,1);
-  game.playRound(2,0);
-  game.playRound(0,2);
-  game.playRound(2,1);
-  game.playRound(2,2);
-}
-
-function simDiagR() {
-  const game = GameController();
-  game.playRound(0,2);
-  game.playRound(1,0);
-  game.playRound(1,1);
-  game.playRound(1,2);
-  game.playRound(0,0);
-  game.playRound(2,2);
-  game.playRound(2,0);
-}
-
-function simRow() {
-  const game = GameController();
-  game.playRound(0,0);
-  game.playRound(1,0);
-  game.playRound(0,1);
-  game.playRound(1,1);
-  game.playRound(2,0);
-  game.playRound(1,2);
-}
-
-function simCol() {
-  const game = GameController();
-  game.playRound(0,0);
-  game.playRound(0,1);
-  game.playRound(1,0);
-  game.playRound(1,1);
-  game.playRound(0,2);
-  game.playRound(2,1);
-}
-
-function simDraw() {
-  const game = GameController();
-  game.playRound(0,0); //P1
-  game.playRound(1,0); //P2
-  game.playRound(2,0); //P1
-  game.playRound(1,1); //P2
-  game.playRound(0,1); //P1
-  game.playRound(2,1); //P2
-  game.playRound(1,2); //P1
-  game.playRound(0,2); //P2
-  game.playRound(2,2); //P1
-}
-
 function simGame() {
-  simCol()
-  simDraw()
-  simRow()
-  simDiag()
-  simDiagR()
+    
+  const col = () => {
+    const game = GameController('Test-Sally','Test-David');
+    game.playRound(0,0);
+    game.playRound(0,1);
+    game.playRound(1,0);
+    game.playRound(1,1);
+    game.playRound(0,2);
+    game.playRound(2,1);
+  }
+  
+  const row = () => {
+    const game = GameController('Test-Sally','Test-David');
+    game.playRound(0,0);
+    game.playRound(1,0);
+    game.playRound(0,1);
+    game.playRound(1,1);
+    game.playRound(2,0);
+    game.playRound(1,2);
+  }
+  
+  const draw = () => {
+    const game = GameController('Test-Sally','Test-David');
+    game.playRound(0,0); //P1
+    game.playRound(1,0); //P2
+    game.playRound(2,0); //P1
+    game.playRound(1,1); //P2
+    game.playRound(0,1); //P1
+    game.playRound(2,1); //P2
+    game.playRound(1,2); //P1
+    game.playRound(0,2); //P2
+    game.playRound(2,2); //P1
+  }
+  
+  const diag = () => {
+    const game = GameController('Test-Sally','Test-David');
+    game.playRound(0,0);
+    game.playRound(1,0);
+    game.playRound(0,0);
+    game.playRound(1,1);
+    game.playRound(2,0);
+    game.playRound(0,2);
+    game.playRound(2,1);
+    game.playRound(2,2);
+  }
+  
+  const diagR = () => {
+    const game = GameController('Test-Sally','Test-David');
+    game.playRound(0,2);
+    game.playRound(1,0);
+    game.playRound(1,1);
+    game.playRound(1,2);
+    game.playRound(0,0);
+    game.playRound(2,2);
+    game.playRound(2,0);
+  }
+  
+  const all = () => {
+    const lst = [col(),row(),draw(),diag(),diagR()]
+  }
+  
+  return {col, row, draw, diag, diagR, all};
 }
 
-//const game = GameController();
+// const game = GameController();
 
 //COMPLETE - ADD WINNING CONDITION CHECK, NEED TO TEST PLAYER 2. Vertical didn't work. REWROTE WINNING CONDITION ALGORITHM. WINNER IF FAKE DIAGONAL. 
 //COMPLETE - ISSUE IS IF PLAYER CHOSES A CELL ALREADY WITH TOKEN STILL SWITCHES PLAYERS INSTEAD OF ASKING THEM TO TRY AGAIN.
